@@ -1,0 +1,36 @@
+<vector android:height="24dp" android:viewportHeight="56"
+    android:viewportWidth="332" android:width="24dp"
+    xmlns:aapt="http://schemas.android.com/aapt" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#FEDC97" android:fillType="nonZero"
+        android:pathData="M14,0L318,0A14,14 0,0 1,332 14L332,42A14,14 0,0 1,318 56L14,56A14,14 0,0 1,0 42L0,14A14,14 0,0 1,14 0z"
+        android:strokeColor="#00000000" android:strokeWidth="1"/>
+    <path android:fillType="nonZero"
+        android:pathData="M290.5,40.5m-60.5,0a60.5,60.5 0,1 1,121 0a60.5,60.5 0,1 1,-121 0"
+        android:strokeColor="#00000000" android:strokeWidth="1">
+        <aapt:attr name="android:fillColor">
+            <gradient android:endX="231.4125" android:endY="-19.55088"
+                android:startX="351" android:startY="101.98641" android:type="linear">
+                <item android:color="#FFB122E5" android:offset="0"/>
+                <item android:color="#FFFF63DE" android:offset="1"/>
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:fillType="nonZero"
+        android:pathData="M13.5,55.5m-60.5,0a60.5,60.5 0,1 1,121 0a60.5,60.5 0,1 1,-121 0"
+        android:strokeColor="#00000000" android:strokeWidth="1">
+        <aapt:attr name="android:fillColor">
+            <gradient android:endX="-45.587494"
+                android:endY="-3.5874956" android:startX="74"
+                android:startY="116" android:type="linear">
+                <item android:color="#FFB122E5" android:offset="0"/>
+                <item android:color="#FFFF63DE" android:offset="1"/>
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:fillColor="#FEDC97" android:fillType="nonZero"
+        android:pathData="M262.5,76.5m-60.5,0a60.5,60.5 0,1 1,121 0a60.5,60.5 0,1 1,-121 0"
+        android:strokeColor="#00000000" android:strokeWidth="1"/>
+    <path android:fillColor="#FEDC97" android:fillType="nonZero"
+        android:pathData="M13.5,-12.5m-60.5,0a60.5,60.5 0,1 1,121 0a60.5,60.5 0,1 1,-121 0"
+        android:strokeColor="#00000000" android:strokeWidth="1"/>
+</vector>
