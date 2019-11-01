@@ -8,6 +8,7 @@
     tools:ignore="UselessParent"
     >
     <LinearLayout
+        android:layout_marginTop="50dp"
         android:background="@color/dark"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,30 +16,149 @@
         android:weightSum="6"
         android:gravity="top"
         tools:ignore="UselessParent">
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/day0"
+                    android:layout_width="90dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/day_button"
+                    android:text="@string/day0"
+                    android:textColor="@color/dark"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/day1"
+                    android:layout_width="90dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/day_button"
+                    android:text="@string/day1"
+                    android:textColor="@color/dark"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/day2"
+                    android:layout_width="90dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/day_button"
+                    android:text="@string/day2"
+                    android:textColor="@color/dark"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/day3"
+                    android:layout_width="90dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/day_button"
+                    android:text="@string/day3"
+                    android:textColor="@color/dark"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/day4"
+                    android:layout_width="90dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/day_button"
+                    android:text="@string/day4"
+                    android:textColor="@color/dark"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/day5"
+                    android:layout_width="90dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/day_button"
+                    android:text="@string/day5"
+                    android:textColor="@color/dark"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/day6"
+                    android:layout_width="90dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/day_button"
+                    android:text="@string/day6"
+                    android:textColor="@color/dark"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="10dp"
-                android:background="@drawable/ic_tasky_logo"/>
-            <ImageButton
-                android:layout_width="40dp"
-                android:layout_marginTop="13dp"
-                android:layout_marginRight="10dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:background="@drawable/ic_menu"/>
-        </FrameLayout>
+            android:layout_height="match_parent"
+            android:id="@+id/mainFrame"/>
+    </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            
-        </LinearLayout>
+    <LinearLayout
+        android:id="@+id/menu_layout"
+        android:visibility="gone"
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:background="@drawable/menu"
+        android:layout_height="200dp"
+        android:orientation="vertical">
 
     </LinearLayout>
+    <FrameLayout
+        android:background="@color/dark"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/debug"
+            android:textColor="@color/light"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="14dp"
+            android:src="@drawable/ic_tasky_logo" />
+        <ImageButton
+            android:id="@+id/menu"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="14dp"
+            android:layout_gravity="right"
+            android:background="@color/dark"
+            android:src="@drawable/ic_menu"/>
+    </FrameLayout>
 </FrameLayout>
