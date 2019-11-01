@@ -21,7 +21,7 @@
         android:layout_marginStart="42dp"
         android:layout_marginBottom="12dp"
         android:gravity="center"
-        android:text="Tasky"
+        android:text="@string/app_name"
         android:textColor="#d8d8d8"
         android:textSize="35sp"
         android:textStyle="italic|bold" />
@@ -33,6 +33,7 @@
         android:layout_gravity="top">
 
         <ImageView
+            android:layout_marginTop="35dp"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@drawable/ic_tasky_logo"
@@ -262,9 +263,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/ic_backspace_arrow"
-                android:scaleX="0.25"
-                android:scaleY="0.35"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_backspace_arrow"
                 android:text="1"
                 android:textColor="#d8d8d8"
                 android:textSize="24sp" />

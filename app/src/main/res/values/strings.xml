@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">Tasky</string>
+    <string name="day0">SAT</string>
+    <string name="day1">SUN</string>
+    <string name="day2">MON</string>
+    <string name="day3">TUE</string>
+    <string name="day4">WEN</string>
+    <string name="day5">THU</string>
+    <string name="day6">FRI</string>
+    <string name="done">Done</string>
+    <string name="today">Today</string>
+    <string name="overdue">Overdue</string>
+
+    <string-array name="days">
+        <item>SUN</item>
+        <item>MON</item>
+        <item>TUE</item>
+        <item>WEN</item>
+        <item>THU</item>
+        <item>FRI</item>
+        <item>SAT</item>
+        <item>Done</item>
+    </string-array>
+
 </resources>
