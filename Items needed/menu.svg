@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="20px" viewBox="0 0 36 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>menu</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Today" transform="translate(-306.000000, -19.000000)" fill="#FFFFFF">
+            <g id="menu" transform="translate(306.000000, 19.000000)">
+                <path d="M17.9938673,19.9772093 C17.3488938,19.9772093 16.704,19.7375194 16.2122655,19.2591473 L0.738318584,4.19821705 C-0.246026549,3.24015504 -0.246026549,1.68682171 0.738318584,0.729147287 C1.72226549,-0.228527132 3.31789381,-0.228527132 4.30231858,0.729147287 L17.9938673,14.0558915 L31.6854956,0.729612403 C32.6698407,-0.228062016 34.2653097,-0.228062016 35.249177,0.729612403 C36.234,1.68728682 36.234,3.24062016 35.249177,4.19868217 L19.775469,19.2596124 C19.2834956,19.738062 18.6386018,19.9772093 17.9938673,19.9772093 Z" id="Path"></path>
+            </g>
+        </g>
+    </g>
+</svg>
