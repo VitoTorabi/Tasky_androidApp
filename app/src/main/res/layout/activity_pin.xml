@@ -125,6 +125,7 @@
             android:weightSum="3">
 
             <Button
+                android:onClick="numClick"
                 android:id="@+id/num1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -135,6 +136,7 @@
                 android:textSize="24sp" />
 
             <Button
+                android:onClick="numClick"
                 android:id="@+id/num2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -145,6 +147,7 @@
                 android:textSize="24sp" />
 
             <Button
+                android:onClick="numClick"
                 android:id="@+id/num3"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -166,6 +169,7 @@
             android:weightSum="3">
 
             <Button
+                android:onClick="numClick"
                 android:id="@+id/num4"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -176,6 +180,7 @@
                 android:textSize="24sp" />
 
             <Button
+                android:onClick="numClick"
                 android:id="@+id/num5"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -186,6 +191,7 @@
                 android:textSize="24sp" />
 
             <Button
+                android:onClick="numClick"
                 android:id="@+id/num6"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -207,6 +213,7 @@
             android:weightSum="3">
 
             <Button
+                android:onClick="numClick"
                 android:id="@+id/num7"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -217,6 +224,7 @@
                 android:textSize="24sp" />
 
             <Button
+                android:onClick="numClick"
                 android:id="@+id/num8"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -227,6 +235,7 @@
                 android:textSize="24sp" />
 
             <Button
+                android:onClick="numClick"
                 android:id="@+id/num9"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -249,6 +258,7 @@
 
 
             <Button
+                android:onClick="numClick"
                 android:id="@+id/num0"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

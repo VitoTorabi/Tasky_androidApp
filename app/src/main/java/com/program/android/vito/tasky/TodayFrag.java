@@ -4,11 +4,21 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 public class TodayFrag extends Fragment {
+
+
+    ArrayList<MyTask> tasks;
+    RecyclerView taskRV;
+    TaskAdapter adapter;
+    LinearLayoutManager llm;
 
     @Nullable
     @Override
@@ -16,6 +26,26 @@ public class TodayFrag extends Fragment {
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.today_frag,container,false);
+        tasks = new ArrayList<>();
+        tasks.add(new MyTask("Vito","salam boro dars bekhon golam"));
+        tasks.add(new MyTask("reply","aleyk salam ghalat nakhor golam"));
+        tasks.add(new MyTask("reply","aleyk salam ghalat nakhor golam"));
+        tasks.add(new MyTask("reply","aleyk salam ghalat nakhor golam"));
+        tasks.add(new MyTask("reply","aleyk salam ghalat nakhor golam"));
+        tasks.add(new MyTask("reply","aleyk salam ghalat nakhor golam"));
+        tasks.add(new MyTask("reply","aleyk salam ghalat nakhor golam"));
+
+        MainActivity mainActivity = (MainActivity) getActivity();
+
+        taskRV = view.findViewById(R.id.task_rv_todo);
+        adapter = new TaskAdapter(tasks,mainActivity);
+        llm = new LinearLayoutManager(mainActivity,LinearLayoutManager.VERTICAL,false);
+        taskRV.setLayoutManager(llm);
+        taskRV.setAdapter(adapter);
+
+
+
+
         return view;
     }
 }
