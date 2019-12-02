@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -30,6 +31,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyTaskViewHold
 
             viewHolder.text.setText(myTasks.get(i).text);
             viewHolder.title.setText(myTasks.get(i).title);
+            viewHolder.time.setText(myTasks.get(i).deadline);
+            if(myTasks.get(i).alarmTime != null){
+                viewHolder.alarmTime.setText(myTasks.get(i).alarmTime);
+                viewHolder.alarmTime.setVisibility(View.VISIBLE);
+                viewHolder.addAlarm.setVisibility(View.GONE);
+            }else{
+                viewHolder.alarmTime.setVisibility(View.GONE);
+                viewHolder.addAlarm.setVisibility(View.VISIBLE);
+            }
 
 
     }
@@ -44,15 +54,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyTaskViewHold
         TextView title;
         TextView time;
         TextView alarmTime;
+        ImageView addAlarm;
 
         MyTaskViewHolder(View itemView) {
             super(itemView);
             text = itemView.findViewById(R.id.task);
-            time = itemView.findViewById(R.id.taskDeadLine);
-            alarmTime = itemView.findViewById(R.id.alarmTime);
+            time = itemView.findViewById(R.id.task_deadLine);
+            alarmTime = itemView.findViewById(R.id.task_alarm);
             title = itemView.findViewById(R.id.task_title);
-
-
+            addAlarm = itemView.findViewById(R.id.add_alarm);
         }
     }
 

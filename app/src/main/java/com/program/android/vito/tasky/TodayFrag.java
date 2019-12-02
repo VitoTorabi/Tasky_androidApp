@@ -33,13 +33,15 @@ public class TodayFrag extends Fragment {
         View view = inflater.inflate(R.layout.today_frag,container,false);
         tasks = new ArrayList<>();
         doneTasks = new ArrayList<>();
-        tasks.add(new MyTask("Vito","salam boro dars bekhon golam"));
-        tasks.add(new MyTask("reply","aleyk salam ghalat nakhor golam"));
-        tasks.add(new MyTask("reply","aleyk salam ghalat nakhor golam"));
-        doneTasks.add(new MyTask("You did it","aleyk salam ghalat nakhor golam"));
-        doneTasks.add(new MyTask("Yeah I did","aleyk salam ghalat nakhor golam"));
-        doneTasks.add(new MyTask("Nice work","aleyk salam ghalat nakhor golam"));
-        doneTasks.add(new MyTask("Thanks bro","aleyk salam ghalat nakhor golam"));
+        tasks.add(new MyTask("Vito","salam boro dars bekhon golam","08:00"));
+        tasks.add(new MyTask("Vito","salam boro dars bekhon golam","12:00"));
+        tasks.add(new MyTask("Vito","salam boro dars bekhon golam","7:30"));
+
+        doneTasks.add(new MyTask("Vito","salam boro dars bekhon golam","7:30"));
+        doneTasks.add(new MyTask("Vito","salam boro dars bekhon golam","7:30"));
+        doneTasks.add(new MyTask("Vito","salam boro dars bekhon golam","7:30"));
+        tasks.get(1).setAlarmTime("08:30");
+
 
         MainActivity mainActivity = (MainActivity) getActivity();
 

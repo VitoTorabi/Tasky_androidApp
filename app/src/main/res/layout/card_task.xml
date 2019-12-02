@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:id="@+id/taskDeadLine"
+            android:id="@+id/task_deadLine"
             android:text="08:30"
             android:textColor="@color/purple"
             android:layout_marginTop="8dp"
@@ -69,13 +69,14 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_break_bell"/>
             <TextView
-                android:id="@+id/alarmTime"
+                android:id="@+id/task_alarm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="6dp"
                 android:text="08:00"
                 />
             <ImageView
+                android:id="@+id/add_alarm"
                 android:layout_margin="6dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
