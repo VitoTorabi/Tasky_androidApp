@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import java.util.ArrayList;
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
 
         menuLayout = findViewById(R.id.menu_layout);
+        final FrameLayout menuFrame = findViewById(R.id.menu_frame);
         openMenu = AnimationUtils.loadAnimation(this, R.anim.open_menu);
         closeMenu = AnimationUtils.loadAnimation(this, R.anim.close_menu);
         menu.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +86,9 @@ public class MainActivity extends AppCompatActivity {
                 if(menuLayout.getVisibility()== View.VISIBLE){
                     menuLayout.startAnimation(closeMenu);
                     menuLayout.setVisibility(View.GONE);
+                    menuFrame.setVisibility(View.GONE);
                 }else {
+                    menuFrame.setVisibility(View.VISIBLE);
                     menuLayout.startAnimation(openMenu);
                     menuLayout.setVisibility(View.VISIBLE);
                 }

@@ -8,10 +8,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-/**
- * Created by mohd on 18/10/2017.
- */
-
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyTaskViewHolder> {
 
     List<MyTask> myTasks;
@@ -46,10 +42,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyTaskViewHold
     public static class MyTaskViewHolder extends RecyclerView.ViewHolder {
         TextView text;
         TextView title;
+        TextView time;
+        TextView alarmTime;
 
         MyTaskViewHolder(View itemView) {
             super(itemView);
             text = itemView.findViewById(R.id.task);
+            time = itemView.findViewById(R.id.taskDeadLine);
+            alarmTime = itemView.findViewById(R.id.alarmTime);
             title = itemView.findViewById(R.id.task_title);
 
 

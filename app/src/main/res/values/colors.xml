@@ -7,6 +7,7 @@
     <color name="light">#D8D8D8</color>
     <color name="creamy">#FEDC97</color>
     <color name="pink_start">#B122E5</color>
+    <color name="purple">#8739E5</color>
     <color name="pink_end">#FF63DE </color>
     <color name="colorAccent">#D81B60</color>
 </resources>

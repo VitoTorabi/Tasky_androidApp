@@ -20,6 +20,11 @@ public class TodayFrag extends Fragment {
     TaskAdapter adapter;
     LinearLayoutManager llm;
 
+    ArrayList<MyTask> doneTasks;
+    RecyclerView doneTaskRV;
+    DoneTaskAdapter doneAdapter;
+    LinearLayoutManager doneLlm;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -27,13 +32,14 @@ public class TodayFrag extends Fragment {
 
         View view = inflater.inflate(R.layout.today_frag,container,false);
         tasks = new ArrayList<>();
+        doneTasks = new ArrayList<>();
         tasks.add(new MyTask("Vito","salam boro dars bekhon golam"));
         tasks.add(new MyTask("reply","aleyk salam ghalat nakhor golam"));
         tasks.add(new MyTask("reply","aleyk salam ghalat nakhor golam"));
-        tasks.add(new MyTask("reply","aleyk salam ghalat nakhor golam"));
-        tasks.add(new MyTask("reply","aleyk salam ghalat nakhor golam"));
-        tasks.add(new MyTask("reply","aleyk salam ghalat nakhor golam"));
-        tasks.add(new MyTask("reply","aleyk salam ghalat nakhor golam"));
+        doneTasks.add(new MyTask("You did it","aleyk salam ghalat nakhor golam"));
+        doneTasks.add(new MyTask("Yeah I did","aleyk salam ghalat nakhor golam"));
+        doneTasks.add(new MyTask("Nice work","aleyk salam ghalat nakhor golam"));
+        doneTasks.add(new MyTask("Thanks bro","aleyk salam ghalat nakhor golam"));
 
         MainActivity mainActivity = (MainActivity) getActivity();
 
@@ -43,8 +49,11 @@ public class TodayFrag extends Fragment {
         taskRV.setLayoutManager(llm);
         taskRV.setAdapter(adapter);
 
-
-
+        doneTaskRV = view.findViewById(R.id.task_rv_done);
+        doneAdapter = new DoneTaskAdapter(doneTasks,mainActivity);
+        doneLlm = new LinearLayoutManager(mainActivity,LinearLayoutManager.VERTICAL,false);
+        doneTaskRV.setLayoutManager(doneLlm);
+        doneTaskRV.setAdapter(doneAdapter);
 
         return view;
     }
