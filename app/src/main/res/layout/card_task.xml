@@ -7,6 +7,8 @@
     android:layout_marginRight="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginLeft="8dp"
+    android:id="@+id/task_layout"
+    android:clickable="true"
     android:background="@drawable/ic_task_bg"
     android:backgroundTint="@color/light"
     >
@@ -56,6 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
+            android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"

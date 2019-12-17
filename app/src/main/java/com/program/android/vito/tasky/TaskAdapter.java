@@ -1,10 +1,12 @@
 package com.program.android.vito.tasky;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -32,6 +34,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyTaskViewHold
             viewHolder.text.setText(myTasks.get(i).text);
             viewHolder.title.setText(myTasks.get(i).title);
             viewHolder.time.setText(myTasks.get(i).deadline);
+
+            viewHolder.layout.setOnDragListener(new View.OnDragListener() {
+                @Override
+                public boolean onDrag(View v, DragEvent event) {
+                    return false;
+                }
+            });
+
             if(myTasks.get(i).alarmTime != null){
                 viewHolder.alarmTime.setText(myTasks.get(i).alarmTime);
                 viewHolder.alarmTime.setVisibility(View.VISIBLE);
@@ -55,9 +65,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyTaskViewHold
         TextView time;
         TextView alarmTime;
         ImageView addAlarm;
+        LinearLayout layout;
 
         MyTaskViewHolder(View itemView) {
             super(itemView);
+            layout = itemView.findViewById(R.id.task_layout);
             text = itemView.findViewById(R.id.task);
             time = itemView.findViewById(R.id.task_deadLine);
             alarmTime = itemView.findViewById(R.id.task_alarm);
