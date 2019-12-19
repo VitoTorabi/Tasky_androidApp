@@ -1,7 +1,9 @@
 package com.program.android.vito.tasky;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -67,14 +69,38 @@ public class MainActivity extends AppCompatActivity {
         if(day==7)
             day=0;
 
+
+
+        TodayFrag todayFrag = new TodayFrag();
+        todayFrag.onclick = new Onclick() {
+            @Override
+            public void onClickL() {
+                AlertDialog.Builder builder =new AlertDialog.Builder(MainActivity.this);
+                View mView = getLayoutInflater().inflate(R.layout.task_view_dialog, null);
+                builder.setView(mView);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        };
         clicked =days.get(day);
         clicked.setBackgroundResource(R.drawable.day_button_with_gravity);
         clicked.setTextColor(getResources().getColor(R.color.light));
         clicked.setText(R.string.today);
 
         transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.mainFrame, new TodayFrag());
+        transaction.replace(R.id.mainFrame, todayFrag);
         transaction.commit();
+
+//        TodayFrag.addTask.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                AlertDialog.Builder builder =new AlertDialog.Builder(MainActivity.this);
+//                View mView = getLayoutInflater().inflate(R.layout.task_view_dialog, null);
+//                builder.setView(mView);
+//                AlertDialog dialog = builder.create();
+//                dialog.show();
+//            }
+//        });
 
         menuLayout = findViewById(R.id.menu_layout);
         final FrameLayout menuFrame = findViewById(R.id.menu_frame);
