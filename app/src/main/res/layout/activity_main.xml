@@ -34,6 +34,8 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/day_button"
+                    android:onClick="weekDayClick"
+                    android:tag="0"
                     android:text="@string/day0"
                     android:textColor="@color/dark"
                     android:textSize="14sp" />
@@ -47,6 +49,8 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/day_button"
+                    android:onClick="weekDayClick"
+                    android:tag="1"
                     android:text="@string/day1"
                     android:textColor="@color/dark"
                     android:textSize="14sp" />
@@ -60,6 +64,8 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/day_button"
+                    android:onClick="weekDayClick"
+                    android:tag="2"
                     android:text="@string/day2"
                     android:textColor="@color/dark"
                     android:textSize="14sp" />
@@ -73,6 +79,8 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/day_button"
+                    android:onClick="weekDayClick"
+                    android:tag="3"
                     android:text="@string/day3"
                     android:textColor="@color/dark"
                     android:textSize="14sp" />
@@ -86,6 +94,8 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/day_button"
+                    android:onClick="weekDayClick"
+                    android:tag="4"
                     android:text="@string/day4"
                     android:textColor="@color/dark"
                     android:textSize="14sp" />
@@ -99,6 +109,8 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/day_button"
+                    android:onClick="weekDayClick"
+                    android:tag="5"
                     android:text="@string/day5"
                     android:textColor="@color/dark"
                     android:textSize="14sp" />
@@ -112,6 +124,8 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/day_button"
+                    android:onClick="weekDayClick"
+                    android:tag="6"
                     android:text="@string/day6"
                     android:textColor="@color/dark"
                     android:textSize="14sp" />
@@ -124,16 +138,24 @@
             android:id="@+id/mainFrame"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/menu_layout"
-        android:visibility="gone"
+    <FrameLayout
         android:layout_marginTop="50dp"
         android:layout_width="match_parent"
-        android:background="@drawable/menu"
-        android:layout_height="200dp"
-        android:orientation="vertical">
-
-    </LinearLayout>
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:visibility="gone"
+            android:id="@+id/menu_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#55000000"/>
+        <LinearLayout
+            android:id="@+id/menu_layout"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/menu"
+            android:orientation="vertical"
+            android:visibility="gone"/>
+    </FrameLayout>
     <FrameLayout
         android:background="@color/dark"
         android:layout_width="match_parent"
