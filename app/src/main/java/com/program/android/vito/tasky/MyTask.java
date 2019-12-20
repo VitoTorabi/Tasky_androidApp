@@ -28,4 +28,15 @@ public class MyTask {
         this.alarmM = m;
     }
 
+    public boolean isEqual(MyTask t){
+        if(this.text.equals(text) &&
+                this.day.equals(t.day) &&
+                this.month.equals(t.month) && this.title.equals(t.title) &&
+                this.timeH.equals(t.timeH) &&
+                this.timeM.equals(t.timeM))
+            return true;
+        else return false;
+
+    }
+
 }

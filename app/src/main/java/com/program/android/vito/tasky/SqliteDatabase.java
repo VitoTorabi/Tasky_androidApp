@@ -47,11 +47,13 @@ public class SqliteDatabase extends SQLiteOpenHelper {
     }
 
     public Data listTasks(String dateM, String dateD){ //TODO
-        String sql = "select * from " + TABLE_TASKS;
+        String sql = "select * from " + TABLE_TASKS + " where " +
+                COLUMN_DATE_DAY + " = ? " + " and " +
+                COLUMN_DATE_MONTH + " = ? ";
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<MyTask> todoTasks = new ArrayList<>();
         ArrayList<MyTask> doneTasks = new ArrayList<>();
-        Cursor cursor = db.rawQuery(sql,null);
+        Cursor cursor = db.rawQuery(sql,new String[] { dateD , dateM});
         if(cursor.moveToFirst()){
             do{
                 int id = Integer.parseInt(cursor.getString(0));
@@ -84,39 +86,45 @@ public class SqliteDatabase extends SQLiteOpenHelper {
         return data;
     }
 
-    public void updateTask(MyTask task, int done){ //use db.update TODO
-        String query = "update " + TABLE_TASKS + " set "
-                + COLUMN_DATE_MONTH + " = ? , "
-                + COLUMN_DATE_DAY + " = ? , "
-                + COLUMN_DONE + " = "+done+" ,"
-                + COLUMN_TITLE + " = ? ,"
-                + COLUMN_TEXT + " = ? ,"
-                + COLUMN_TIME_H + " = ? ,"
-                + COLUMN_TIME_M + " = ? ,"
-                + COLUMN_ALARM_H + " = ? ,"
-                + COLUMN_ALARM_M + " = ? "
-                + " where " + COLUMN_INDEX + " = "+ task.id;
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, new String[] {
-                        task.month ,task.day ,task.title,task.text,
-                        task.timeH,task.alarmM, task.alarmH,task.alarmM});
+    public void updateTask(MyTask task, int id){ //TODO doesn't work :|
+        ContentValues values = new ContentValues();
+        String month = task.month;
+        String day = task.day;
+        String alarmH = task.alarmH;
+        String alarmM = task.alarmM;
+        String text = task.text;
+        String timeH = task.timeH;
+        String timeM = task.timeM;
+        String title = task.title;
+        values.put(COLUMN_DATE_MONTH , month);
+        values.put(COLUMN_DATE_DAY , day);
+        values.put(COLUMN_ALARM_H , alarmH);
+        values.put(COLUMN_ALARM_M , alarmM);
+        values.put(COLUMN_TEXT, text);
+        values.put(COLUMN_TIME_H, timeH);
+        values.put(COLUMN_TIME_M, timeM);
+        values.put(COLUMN_TITLE , title);
 
-        cursor.close();
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.update(TABLE_TASKS,values,COLUMN_INDEX + "  = ? ",
+                new String[] { String.valueOf(id)});
+        Log.d(""+task.id,"updated");
     }
 
     public void setDone(int id, int done){
         ContentValues values = new ContentValues();
         values.put(COLUMN_DONE, done);
         SQLiteDatabase db = this.getWritableDatabase();
-        db.update(TABLE_TASKS,values, COLUMN_INDEX + " = " + id,null);
+        db.update(TABLE_TASKS,values, COLUMN_INDEX + "  = ? ",
+                new String[] { String.valueOf(id)});
         Log.d(""+id,"done");
     }
 
     public void addTask(MyTask task){
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_DATE_MONTH , task.day);
-        values.put(COLUMN_DATE_DAY , task.month);
+        values.put(COLUMN_DATE_MONTH , task.month);
+        values.put(COLUMN_DATE_DAY , task.day);
         values.put(COLUMN_ALARM_H , task.alarmH);
         values.put(COLUMN_ALARM_M , task.alarmM);
         values.put(COLUMN_TEXT, task.text);

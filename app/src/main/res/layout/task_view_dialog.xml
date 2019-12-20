@@ -8,78 +8,11 @@
     android:background="@color/dark">
 
 
-    <LinearLayout
-        android:clickable="true"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="15dp"
-        android:gravity="center_vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:layout_gravity="right"
-        android:background="@drawable/ic_task_bg"
-        android:backgroundTint="@color/light"
-        android:orientation="horizontal">
 
-
-        <EditText
-            android:id="@+id/addTaskM"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="01"
-            android:layout_marginLeft="6dp"
-            android:textSize="20dp"
-            android:padding="0dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text=" \\ "/>
-        <EditText
-            android:id="@+id/addTaskD"
-            android:layout_width="wrap_content"
-            android:inputType="number"
-            android:hint="08"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:padding="0dp"
-            android:layout_marginRight="6dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text=" - "/>
-
-        <EditText
-            android:id="@+id/addTaskTimeH"
-            android:layout_width="wrap_content"
-            android:inputType="number"
-            android:hint="00"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:padding="0dp"
-            android:layout_marginLeft="6dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text=" : "/>
-        <EditText
-            android:id="@+id/addTaskTimeM"
-            android:layout_width="wrap_content"
-            android:inputType="number"
-            android:hint="00"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:padding="0dp"
-            android:layout_marginRight="6dp"/>
-
-
-    </LinearLayout>
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_height="wrap_content">
         <EditText
             android:maxLines="1"
@@ -94,7 +27,75 @@
             android:paddingRight="10dp"
             android:hint="title"
             android:minWidth="80dp"
+            android:layout_marginTop="37dp"
             android:textStyle="bold" />
+        <LinearLayout
+            android:clickable="true"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_gravity="right"
+            android:background="@drawable/ic_task_bg"
+            android:backgroundTint="@color/light"
+            android:orientation="horizontal">
+
+
+            <EditText
+                android:id="@+id/addTaskM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="01"
+                android:layout_marginLeft="6dp"
+                android:textSize="20dp"
+                android:padding="0dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text=" \\ "/>
+            <EditText
+                android:id="@+id/addTaskD"
+                android:layout_width="wrap_content"
+                android:inputType="number"
+                android:hint="08"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:padding="0dp"
+                android:layout_marginRight="6dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text=" - "/>
+
+            <EditText
+                android:id="@+id/addTaskTimeH"
+                android:layout_width="wrap_content"
+                android:inputType="number"
+                android:hint="00"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:padding="0dp"
+                android:layout_marginLeft="6dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text=" : "/>
+            <EditText
+                android:id="@+id/addTaskTimeM"
+                android:layout_width="wrap_content"
+                android:inputType="number"
+                android:hint="00"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:padding="0dp"
+                android:layout_marginRight="6dp"/>
+
+
+        </LinearLayout>
 
     </FrameLayout>
 
@@ -123,6 +124,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="18dp"
+        android:layout_marginRight="20dp"
+
         android:layout_marginLeft="20dp">
         <LinearLayout
             android:clickable="true"
@@ -168,7 +171,6 @@
         <Button
             android:text="Save"
             android:id="@+id/addTaskSave"
-            android:layout_marginRight="20dp"
             android:background="@drawable/ic_task_bg"
             android:layout_width="wrap_content"
             android:layout_gravity="right"

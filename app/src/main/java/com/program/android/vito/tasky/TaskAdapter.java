@@ -1,9 +1,7 @@
 package com.program.android.vito.tasky;
 
-import android.annotation.SuppressLint;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +34,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyTaskViewHold
 
             viewHolder.text.setText(myTasks.get(i).text);
             viewHolder.title.setText(myTasks.get(i).title);
+            if(myTasks.get(i).timeH.length()<2)
+                myTasks.get(i).timeH = "0" + myTasks.get(i).timeH;
+            if(myTasks.get(i).timeM.length()<2)
+                myTasks.get(i).timeM = "0" + myTasks.get(i).timeM;
             viewHolder.time.setText(myTasks.get(i).timeH+":"+ myTasks.get(i).timeM);
 
             viewHolder.layout.setOnTouchListener(new OnSwipeTouchListener(mainActivity){
@@ -62,9 +64,32 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyTaskViewHold
                     mainActivity.refreshFrag();
                 }
             });
+            viewHolder.addAlarm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(""+myTasks.get(i).id,"onclick");
+                    Onclick onclick = mainActivity.taskOnClick(myTasks.get(i));
+                    onclick.onClickL();
+                    mainActivity.refreshFrag();
+                }
+            });
+            viewHolder.forward.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Integer k = Integer.parseInt(myTasks.get(i).day)+1;
+                    myTasks.get(i).day = String.valueOf(k);
+                    mainActivity.db.updateTask(myTasks.get(i),myTasks.get(i).id);
+                    mainActivity.refreshFrag();
 
-            if(myTasks.get(i).alarmM != "" && myTasks.get(i).alarmH != ""&&
+                }
+            });
+
+            if(!myTasks.get(i).alarmM.equals("") && !myTasks.get(i).alarmH.equals("") &&
                     myTasks.get(i).alarmM != null && myTasks.get(i).alarmH != null){
+                if(myTasks.get(i).alarmH.length()<2)
+                    myTasks.get(i).alarmH = "0" + myTasks.get(i).alarmH;
+                if(myTasks.get(i).alarmM.length()<2)
+                    myTasks.get(i).alarmM = "0" + myTasks.get(i).alarmM;
                 viewHolder.alarmTime.setText(myTasks.get(i).alarmH+":"+myTasks.get(i).alarmM);
                 viewHolder.alarmTime.setVisibility(View.VISIBLE);
                 viewHolder.addAlarm.setVisibility(View.GONE);
