@@ -3,23 +3,29 @@ package com.program.android.vito.tasky;
 
 public class MyTask {
     public int id ;
-    public String date;
+    public String day;
+    public String month;
     public String title;
     public String text;
-    public String deadline;
-    public String alarmTime = null;
+    public String timeH;
+    public String timeM;
+    public String alarmM = null;
+    public String alarmH = null;
 
 
 
-    public MyTask(int id, String date, String title, String text, String deadline){
+    public MyTask(String dateM, String dateD, String title, String text, String h, String m){
         this.text = text;
-        this.id = id;
-        this.date = date;
+        this.day = dateD;
+        this.month = dateM;
         this.title = title;
-        this.deadline = deadline;
+        this.timeH = h;
+        this.timeM = m;
     }
-    public void setAlarmTime(String alarmTime){
-        this.alarmTime = alarmTime;
+    public void setId(int id) {this.id = id; }
+    public void setAlarmTime(String h, String m){
+        this.alarmH = h;
+        this.alarmM = m;
     }
 
 }

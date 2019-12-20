@@ -14,50 +14,61 @@ import android.widget.ImageView;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class TodayFrag extends Fragment {
 
 
-    ArrayList<MyTask> tasks;
+    ArrayList<MyTask> tasks = new ArrayList<>();
     RecyclerView taskRV;
     TaskAdapter adapter;
     LinearLayoutManager llm;
     ImageButton addTask ;
     public Onclick onclick;
-    ArrayList<MyTask> doneTasks;
+    ArrayList<MyTask> doneTasks = new ArrayList<>();
     RecyclerView doneTaskRV;
     DoneTaskAdapter doneAdapter;
     LinearLayoutManager doneLlm;
+    public Data data;
+    View view;
+    Calendar calendar;
+    MainActivity mainActivity;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.today_frag,container,false);
+        view = inflater.inflate(R.layout.today_frag,container,false);
 
         addTask = view.findViewById(R.id.addTask);
         addTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onclick.onClickL();
+
             }
         });
 
 
-        tasks = new ArrayList<>();
-        doneTasks = new ArrayList<>();
-//        tasks.add(new MyTask("Vito","salam boro dars bekhon golam","08:00"));
-//        tasks.add(new MyTask("Vito","salam boro dars bekhon golam","12:00"));
-//        tasks.add(new MyTask("Vito","salam boro dars bekhon golam","7:30"));
-//
-//        doneTasks.add(new MyTask("Vito","salam boro dars bekhon golam","7:30"));
-//        doneTasks.add(new MyTask("Vito","salam boro dars bekhon golam","7:30"));
-//        doneTasks.add(new MyTask("Vito","salam boro dars bekhon golam","7:30"));
-//        tasks.get(1).setAlarmTime("08:30");
+
+        mainActivity = (MainActivity) getActivity();
+        calendar = Calendar.getInstance();
 
 
-        MainActivity mainActivity = (MainActivity) getActivity();
+        data = mainActivity.db.listTasks(
+                String.valueOf(calendar.get(android.icu.util.Calendar.MONTH)),
+                String.valueOf(calendar.get(android.icu.util.Calendar.DAY_OF_MONTH)));
+
+        if(data!=null) {
+            if (data.todo != null)
+                tasks = new ArrayList<>();
+                tasks.addAll(data.todo);
+            if (data.done != null)
+                doneTasks = new ArrayList<>();
+                doneTasks.addAll(data.done);
+        }
+
 
         taskRV = view.findViewById(R.id.task_rv_todo);
         adapter = new TaskAdapter(tasks,mainActivity);
@@ -76,5 +87,33 @@ public class TodayFrag extends Fragment {
         }
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        data = mainActivity.db.listTasks(
+                String.valueOf(calendar.get(android.icu.util.Calendar.MONTH)),
+                String.valueOf(calendar.get(android.icu.util.Calendar.DAY_OF_MONTH)));
+
+        if(data!=null) {
+            if (data.todo != null)
+                tasks = new ArrayList<>();
+            tasks.addAll(data.todo);
+            if (data.done != null)
+                doneTasks = new ArrayList<>();
+            doneTasks.addAll(data.done);
+        }
+        taskRV = view.findViewById(R.id.task_rv_todo);
+        adapter = new TaskAdapter(tasks,mainActivity);
+        llm = new LinearLayoutManager(mainActivity,LinearLayoutManager.VERTICAL,false);
+        taskRV.setLayoutManager(llm);
+        taskRV.setAdapter(adapter);
+
+        doneTaskRV = view.findViewById(R.id.task_rv_done);
+        doneAdapter = new DoneTaskAdapter(doneTasks,mainActivity);
+        doneLlm = new LinearLayoutManager(mainActivity,LinearLayoutManager.VERTICAL,false);
+        doneTaskRV.setLayoutManager(doneLlm);
+        doneTaskRV.setAdapter(doneAdapter);
     }
 }
