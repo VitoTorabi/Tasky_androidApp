@@ -81,10 +81,11 @@ public class TodayFrag extends Fragment {
         doneLlm = new LinearLayoutManager(mainActivity,LinearLayoutManager.VERTICAL,false);
         doneTaskRV.setLayoutManager(doneLlm);
         doneTaskRV.setAdapter(doneAdapter);
+
+        ImageView noTask = view.findViewById(R.id.noTaskDone);
         if(doneTasks.size() == 0){
-            ImageView noTask = view.findViewById(R.id.noTaskDone);
             noTask.setVisibility(View.VISIBLE);
-        }
+        }else noTask.setVisibility(View.GONE);
 
         return view;
     }
@@ -115,5 +116,11 @@ public class TodayFrag extends Fragment {
         doneLlm = new LinearLayoutManager(mainActivity,LinearLayoutManager.VERTICAL,false);
         doneTaskRV.setLayoutManager(doneLlm);
         doneTaskRV.setAdapter(doneAdapter);
+
+        ImageView noTask = view.findViewById(R.id.noTaskDone);
+        if(doneTasks.size() == 0){
+            noTask.setVisibility(View.VISIBLE);
+        }else noTask.setVisibility(View.GONE);
+
     }
 }

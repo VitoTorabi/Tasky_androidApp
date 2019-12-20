@@ -26,10 +26,11 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout menuLayout;
     Animation openMenu;
     Animation closeMenu;
+    Calendar calendar = Calendar.getInstance();
     Fragment frag;
     FragmentTransaction transaction;
-    Button clicked;
-    int day;
+    public Button clicked;
+    public int day;
 
     public void refreshFrag(){
         frag.onStart();
@@ -43,16 +44,17 @@ public class MainActivity extends AppCompatActivity {
                 View mView = getLayoutInflater().inflate(R.layout.task_view_dialog, null);
 
 
-                final EditText editTextM = mView.findViewById(R.id.addTaskM);
-                final EditText editTextD = mView.findViewById(R.id.addTaskD);
+                final EditText dateM = mView.findViewById(R.id.addTaskM);
+                final EditText dateD = mView.findViewById(R.id.addTaskD);
                 final EditText title = mView.findViewById(R.id.addTaskTitle);
                 final EditText text = mView.findViewById(R.id.addTaskText);
                 final EditText h = mView.findViewById(R.id.addTaskTimeH);
                 final EditText m = mView.findViewById(R.id.addTaskTimeM);
                 final EditText alarmH = mView.findViewById(R.id.addTaskAlarmH);
                 final EditText alarmM = mView.findViewById(R.id.addTaskAlarmM);
-                editTextM.setText(task.month);
-                editTextD.setText(task.day);
+
+                dateM.setText(task.month);
+                dateD.setText(task.day);
                 title.setText(task.title);
                 h.setText(task.timeH);
                 m.setText(task.timeM);
@@ -60,12 +62,17 @@ public class MainActivity extends AppCompatActivity {
                 alarmH.setText(task.alarmH);
                 alarmM.setText(task.alarmM);
 
+
                 Button save = mView.findViewById(R.id.addTaskSave);
 
                 InputFilter[] filters = new InputFilter[1];
                 filters[0] = new InputFilter.LengthFilter(2);
-                editTextD.setFilters(filters);
-                editTextM.setFilters(filters);
+                dateD.setFilters(filters);
+                dateM.setFilters(filters);
+                h.setFilters(filters);
+                m.setFilters(filters);
+                alarmH.setFilters(filters);
+                alarmM.setFilters(filters);
 
 
                 builder.setView(mView);
@@ -75,13 +82,50 @@ public class MainActivity extends AppCompatActivity {
                 save.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        MyTask task = new MyTask(String.valueOf(editTextM.getText()),
-                                String.valueOf(editTextD.getText()),
-                                String.valueOf(title.getText()), String.valueOf(text.getText()),
-                                String.valueOf(h.getText()), String.valueOf(m.getText()));
-                        task.setAlarmTime(String.valueOf(alarmH.getText()),
+
+                        MyTask[] taskArr = new MyTask[]{new MyTask(
+                                String.valueOf(dateM.getText()),
+                                String.valueOf(dateD.getText()),
+                                String.valueOf(title.getText()),
+                                String.valueOf(text.getText()),
+                                String.valueOf(h.getText()),
+                                String.valueOf(m.getText()))};
+                        taskArr[0].setAlarmTime(
+                                String.valueOf(alarmH.getText()),
                                 String.valueOf(alarmM.getText()));
-                        db.addTask(task);
+
+
+                        if(!taskArr[0].alarmH.equals("") && !taskArr[0].alarmM.equals("") ) {
+                            if (Integer.parseInt(taskArr[0].alarmH) > 23 ||
+                                    Integer.parseInt(taskArr[0].alarmH) < 0)
+                                taskArr[0].alarmH = task.alarmH;
+                            if (Integer.parseInt(taskArr[0].alarmM) > 59 ||
+                                    Integer.parseInt(taskArr[0].alarmM) < 0)
+                                taskArr[0].alarmM = task.alarmM;
+                        }else {
+                            taskArr[0].alarmH = task.alarmH;
+                            taskArr[0].alarmM = task.alarmM;
+                        }
+                        if(taskArr[0].timeH.equals("") || Integer.parseInt(taskArr[0].timeH)>23 ||
+                                Integer.parseInt(taskArr[0].timeH)<0)
+                            taskArr[0].timeH = task.timeH;
+                        if(taskArr[0].timeM.equals("") || Integer.parseInt(taskArr[0].timeM)>59 ||
+                                Integer.parseInt(taskArr[0].timeM)<0)
+                            taskArr[0].timeM = task.timeM;
+
+                        if(taskArr[0].day.equals("")|| Integer.parseInt(taskArr[0].day)>30 ||
+                                Integer.parseInt(taskArr[0].day)<1)
+                            taskArr[0].day = task.day;
+                        if( taskArr[0].month.equals("") || Integer.parseInt( taskArr[0].month)>12 ||
+                                Integer.parseInt( taskArr[0].month)<1)
+                            taskArr[0].month = task.month;
+
+                        if(taskArr[0].title.equals(""))
+                            taskArr[0].title = task.title;
+
+                            db.updateTask(taskArr[0],task.id);
+                            refreshFrag();
+
                         dialog.dismiss();
                     }
                 });
@@ -98,8 +142,8 @@ public class MainActivity extends AppCompatActivity {
                 View mView = getLayoutInflater().inflate(R.layout.task_view_dialog, null);
 
 
-                final EditText editTextM = mView.findViewById(R.id.addTaskM);
-                final EditText editTextD = mView.findViewById(R.id.addTaskD);
+                final EditText dateM = mView.findViewById(R.id.addTaskM);
+                final EditText dateD = mView.findViewById(R.id.addTaskD);
                 final EditText title = mView.findViewById(R.id.addTaskTitle);
                 final EditText text = mView.findViewById(R.id.addTaskText);
                 final EditText h = mView.findViewById(R.id.addTaskTimeH);
@@ -107,12 +151,21 @@ public class MainActivity extends AppCompatActivity {
                 final EditText alarmH = mView.findViewById(R.id.addTaskAlarmH);
                 final EditText alarmM = mView.findViewById(R.id.addTaskAlarmM);
 
+                dateD.setHint(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
+                dateM.setHint(String.valueOf(calendar.get(Calendar.MONTH)));
+                h.setHint(String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)));
+                m.setHint(String.valueOf(calendar.get(Calendar.MINUTE)));
+
                 Button save = mView.findViewById(R.id.addTaskSave);
 
                 InputFilter[] filters = new InputFilter[1];
                 filters[0] = new InputFilter.LengthFilter(2);
-                editTextD.setFilters(filters);
-                editTextM.setFilters(filters);
+                dateD.setFilters(filters);
+                dateM.setFilters(filters);
+                h.setFilters(filters);
+                m.setFilters(filters);
+                alarmH.setFilters(filters);
+                alarmM.setFilters(filters);
 
 
                 builder.setView(mView);
@@ -122,13 +175,47 @@ public class MainActivity extends AppCompatActivity {
                 save.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        MyTask task = new MyTask(String.valueOf(editTextM.getText()),
-                                String.valueOf(editTextD.getText()),
-                                String.valueOf(title.getText()), String.valueOf(text.getText()),
-                                String.valueOf(h.getText()), String.valueOf(m.getText()));
-                        task.setAlarmTime(String.valueOf(alarmH.getText()),
+                        MyTask[] task = new MyTask[]{new MyTask(
+                                String.valueOf(dateM.getText()),
+                                String.valueOf(dateD.getText()),
+                                String.valueOf(title.getText()),
+                                String.valueOf(text.getText()),
+                                String.valueOf(h.getText()),
+                                String.valueOf(m.getText()))};
+                        task[0].setAlarmTime(
+                                String.valueOf(alarmH.getText()),
                                 String.valueOf(alarmM.getText()));
-                        db.addTask(task);
+
+                        if(!task[0].alarmH.equals("") && !task[0].alarmM.equals("") ) {
+                            if (Integer.parseInt(task[0].alarmH) > 23 ||
+                                    Integer.parseInt(task[0].alarmH) < 0)
+                                task[0].alarmH = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
+                            if (Integer.parseInt(task[0].alarmH) > 59 ||
+                                    Integer.parseInt(task[0].alarmH) < 0)
+                                task[0].alarmM = String.valueOf(calendar.get(Calendar.MINUTE));
+                        }else {
+                            task[0].alarmH ="";
+                            task[0].alarmM ="";
+                        }
+                        if(task[0].timeH.equals("") || Integer.parseInt(task[0].timeH)>23 ||
+                                Integer.parseInt(task[0].timeH)<0)
+                            task[0].timeH = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
+                        if(task[0].timeM.equals("") || Integer.parseInt(task[0].timeM)>59 ||
+                                Integer.parseInt(task[0].timeM)<0)
+                            task[0].timeM = String.valueOf(calendar.get(Calendar.MINUTE));
+
+                        if(task[0].month.equals("") || Integer.parseInt(task[0].month)>12 ||
+                                Integer.parseInt(task[0].month)<1)
+                            task[0].month = String.valueOf(calendar.get(Calendar.MONTH));
+                        if(task[0].day.equals("")|| Integer.parseInt(task[0].day)>30 ||
+                                Integer.parseInt(task[0].day)<1)
+                            task[0].day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+
+                        if(task[0].title.equals(""))
+                            task[0].title = "title";
+
+
+                        db.addTask(task[0]);
                         dialog.dismiss();
                         refreshFrag();
                     }
@@ -143,6 +230,7 @@ public class MainActivity extends AppCompatActivity {
         TodayFrag todayFrag = new TodayFrag();
         todayFrag.onclick=setOnclickL(todayFrag);
         NextDaysFrag nextDaysFrag = new NextDaysFrag();
+        nextDaysFrag.onclick = setOnclickL(nextDaysFrag);
         DaysBeforeFrag daysBeforeFrag = new DaysBeforeFrag();
 
         clicked.setBackgroundResource(R.drawable.day_button);
@@ -185,7 +273,6 @@ public class MainActivity extends AppCompatActivity {
         days.add((Button) findViewById(R.id.day5));
         days.add((Button) findViewById(R.id.day6));
 
-        final Calendar calendar = Calendar.getInstance();
         day = calendar.get(Calendar.DAY_OF_WEEK);
         if(day==7)
             day=0;
@@ -203,16 +290,6 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.mainFrame, todayFrag);
         transaction.commit();
 
-//        TodayFrag.addTask.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                AlertDialog.Builder builder =new AlertDialog.Builder(MainActivity.this);
-//                View mView = getLayoutInflater().inflate(R.layout.task_view_dialog, null);
-//                builder.setView(mView);
-//                AlertDialog dialog = builder.create();
-//                dialog.show();
-//            }
-//        });
 
         menuLayout = findViewById(R.id.menu_layout);
         final FrameLayout menuFrame = findViewById(R.id.menu_frame);
