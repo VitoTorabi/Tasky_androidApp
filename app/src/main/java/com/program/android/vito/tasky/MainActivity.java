@@ -1,5 +1,7 @@
 package com.program.android.vito.tasky;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.AlarmClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
@@ -193,6 +195,16 @@ public class MainActivity extends AppCompatActivity {
                             if (Integer.parseInt(task[0].alarmH) > 59 ||
                                     Integer.parseInt(task[0].alarmH) < 0)
                                 task[0].alarmM = String.valueOf(calendar.get(Calendar.MINUTE));
+
+
+                            // set alarm
+                            Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
+                            i.putExtra(AlarmClock.EXTRA_HOUR, task[0].alarmH);
+                            i.putExtra(AlarmClock.EXTRA_MINUTES, task[0].alarmM);
+                            i.putExtra(AlarmClock.EXTRA_SKIP_UI,true);
+
+
+                            startActivity(i);
                         }else {
                             task[0].alarmH ="";
                             task[0].alarmM ="";
@@ -274,8 +286,7 @@ public class MainActivity extends AppCompatActivity {
         days.add((Button) findViewById(R.id.day6));
 
         day = calendar.get(Calendar.DAY_OF_WEEK);
-        if(day==7)
-            day=0;
+        day = 1;
 
 
         final TodayFrag todayFrag = new TodayFrag();

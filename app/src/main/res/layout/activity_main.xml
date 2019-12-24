@@ -177,7 +177,7 @@
             android:id="@+id/menu"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginTop="0dp"
+            android:layout_marginTop="5dp"
             android:layout_marginRight="14dp"
             android:layout_gravity="right"
             android:background="@color/dark"
