@@ -1,5 +1,6 @@
 package com.program.android.vito.tasky;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import java.sql.Time;
 import java.util.ArrayList;
 
 public class PinActivity extends AppCompatActivity {
@@ -37,9 +39,6 @@ public class PinActivity extends AppCompatActivity {
                 finish();
             } else {
                 pinLayout.startAnimation(shake);
-                for (int i = 0; i < 4; i++) {
-                    pinCircles.get(i).setBackgroundResource(R.drawable.circle);
-                }
                 enteredPass[0] = "";
             }
         }
@@ -49,8 +48,24 @@ public class PinActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pin);
-
         shake =AnimationUtils.loadAnimation(this, R.anim.shake);
+        shake.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                for (int i = 0; i < 4; i++)
+                    pinCircles.get(i).setBackgroundResource(R.drawable.circle);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
         backspace = findViewById(R.id.bakspace);
         pinLayout = findViewById(R.id.pinLayout);
         pinCircles = new ArrayList<>();
