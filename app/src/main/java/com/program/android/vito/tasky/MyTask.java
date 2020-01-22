@@ -9,8 +9,8 @@ public class MyTask {
     public String text;
     public String timeH;
     public String timeM;
-    public String alarmM = null;
-    public String alarmH = null;
+    public String imagePath = null;
+    public int alarm = 0;
 
 
 
@@ -22,11 +22,10 @@ public class MyTask {
         this.timeH = h;
         this.timeM = m;
     }
-    public void setId(int id) {this.id = id; }
-    public void setAlarmTime(String h, String m){
-        this.alarmH = h;
-        this.alarmM = m;
-    }
+    public void setId(int id) { this.id = id; }
+    public void setAlarm(){ this.alarm = 1; }
+
+    public void setImagePath(String imagePath) { this.imagePath = imagePath; }
 
     public boolean isEqual(MyTask t){
         if(this.text.equals(text) &&

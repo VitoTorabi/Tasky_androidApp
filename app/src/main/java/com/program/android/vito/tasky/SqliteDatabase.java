@@ -11,13 +11,14 @@ import java.util.ArrayList;
 
 public class SqliteDatabase extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "tasky";
     private static final String TABLE_TASKS = "tasks";
     private static final String COLUMN_INDEX = "task_index", COLUMN_TITLE = "title",
             COLUMN_DONE = "is_done", COLUMN_TEXT = "text", COLUMN_TIME_H = "time_hours",
-            COLUMN_ALARM_M = "alarm_m",COLUMN_ALARM_H = "alarm_h", COLUMN_DATE_DAY = "date_d",
-            COLUMN_DATE_MONTH = "date_m",COLUMN_TIME_M = "time_minutes";
+            COLUMN_ALARM = "alarm", COLUMN_DATE_DAY = "date_d",
+            COLUMN_DATE_MONTH = "date_m",COLUMN_TIME_M = "time_minutes",
+            COLUMN_IMAGE_PATH = "image_path";
 
     public SqliteDatabase(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -34,8 +35,8 @@ public class SqliteDatabase extends SQLiteOpenHelper {
                 + COLUMN_TEXT + " TEXT,"
                 + COLUMN_TIME_H + " TEXT,"
                 + COLUMN_TIME_M + " TEXT,"
-                + COLUMN_ALARM_H + " TEXT,"
-                + COLUMN_ALARM_M + " TEXT"
+                + COLUMN_ALARM + " INTEGER,"
+                + COLUMN_IMAGE_PATH + " TEXT"
                 + ")";
         db.execSQL(CREATE_TASKS_TABLE);
     }
@@ -64,15 +65,19 @@ public class SqliteDatabase extends SQLiteOpenHelper {
                 String text = cursor.getString(5);
                 String timeH = cursor.getString(6);
                 String timeM = cursor.getString(7);
-                String alarmH = cursor.getString(8);
-                String alarmM = cursor.getString(9);
+                int alarm = Integer.parseInt(cursor.getString(8));
+                String image = cursor.getString(9);
 
-                Log.d(String.valueOf(id), String.valueOf(done));
+                Log.d(String.valueOf(id), String.valueOf(alarm));
 
                 MyTask temp = new MyTask(month, day, title, text, timeH, timeM);
                 temp.setId(id);
-                if (alarmH != null && alarmM != null)
-                    temp.setAlarmTime(alarmH,alarmM);
+                if (alarm == 1)
+                    temp.setAlarm();
+                else temp.alarm = 0;
+
+                if (image != null)
+                    temp.setImagePath(image);
 
                 if (done ==0)
                     todoTasks.add(temp);
@@ -90,20 +95,20 @@ public class SqliteDatabase extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         String month = task.month;
         String day = task.day;
-        String alarmH = task.alarmH;
-        String alarmM = task.alarmM;
+        String alarm = String.valueOf(task.alarm);
         String text = task.text;
         String timeH = task.timeH;
         String timeM = task.timeM;
         String title = task.title;
+        String image = task.imagePath;
         values.put(COLUMN_DATE_MONTH , month);
         values.put(COLUMN_DATE_DAY , day);
-        values.put(COLUMN_ALARM_H , alarmH);
-        values.put(COLUMN_ALARM_M , alarmM);
+        values.put(COLUMN_ALARM , alarm);
         values.put(COLUMN_TEXT, text);
         values.put(COLUMN_TIME_H, timeH);
         values.put(COLUMN_TIME_M, timeM);
         values.put(COLUMN_TITLE , title);
+        values.put(COLUMN_IMAGE_PATH , image);
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.update(TABLE_TASKS,values,COLUMN_INDEX + "  = ? ",
@@ -125,19 +130,19 @@ public class SqliteDatabase extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_DATE_MONTH , task.month);
         values.put(COLUMN_DATE_DAY , task.day);
-        values.put(COLUMN_ALARM_H , task.alarmH);
-        values.put(COLUMN_ALARM_M , task.alarmM);
+        values.put(COLUMN_ALARM , String.valueOf(task.alarm));
         values.put(COLUMN_TEXT, task.text);
         values.put(COLUMN_TIME_H, task.timeH);
         values.put(COLUMN_TIME_M, task.timeM);
         values.put(COLUMN_TITLE , task.title);
+        values.put(COLUMN_IMAGE_PATH , task.imagePath);
         values.put(COLUMN_DONE , 0);
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_TASKS, null, values);
     }
 
-//    public MyTask findTask(int i){ // TODO
+//    public MyTask findTask(int i){
 //        String query = "Select * FROM "    + TABLE_TASKS + " WHERE " + COLUMN_INDEX + " = " + i;
 //        SQLiteDatabase db = this.getWritableDatabase();
 //        MyTask task = null;

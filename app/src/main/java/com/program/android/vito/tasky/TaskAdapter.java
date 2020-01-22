@@ -1,5 +1,7 @@
 package com.program.android.vito.tasky;
 
+import android.content.Intent;
+import android.provider.AlarmClock;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyTaskViewHold
 
     List<MyTask> myTasks;
     MainActivity mainActivity;
+    TaskAdapter mAdapter = this;
 
     public TaskAdapter(List<MyTask> myTasks, MainActivity mainActivity) {
         this.myTasks = myTasks;
@@ -67,10 +70,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyTaskViewHold
             viewHolder.addAlarm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(""+myTasks.get(i).id,"onclick");
-                    Onclick onclick = mainActivity.taskOnClick(myTasks.get(i));
-                    onclick.onClickL();
-                    mainActivity.refreshFrag();
+                    Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM);
+                    intent.putExtra(AlarmClock.EXTRA_MESSAGE, myTasks.get(i).title);
+                    intent.putExtra(AlarmClock.EXTRA_HOUR, Integer.parseInt(myTasks.get(i).timeH));
+                    intent.putExtra(AlarmClock.EXTRA_MINUTES, Integer.parseInt(myTasks.get(i).timeM));
+                    intent.putExtra(AlarmClock.EXTRA_SKIP_UI,true);
+                    mainActivity.startActivity(intent);
+                    myTasks.get(i).setAlarm();
+                    mainActivity.db.updateTask(myTasks.get(i),myTasks.get(i).id);
+                    mAdapter.notifyDataSetChanged();
                 }
             });
             viewHolder.forward.setOnClickListener(new View.OnClickListener() {
@@ -84,13 +92,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyTaskViewHold
                 }
             });
 
-            if(!myTasks.get(i).alarmM.equals("") && !myTasks.get(i).alarmH.equals("") &&
-                    myTasks.get(i).alarmM != null && myTasks.get(i).alarmH != null){
-                if(myTasks.get(i).alarmH.length()<2)
-                    myTasks.get(i).alarmH = "0" + myTasks.get(i).alarmH;
-                if(myTasks.get(i).alarmM.length()<2)
-                    myTasks.get(i).alarmM = "0" + myTasks.get(i).alarmM;
-                viewHolder.alarmTime.setText(myTasks.get(i).alarmH+":"+myTasks.get(i).alarmM);
+            if(myTasks.get(i).alarm == 1 ){
+                if(myTasks.get(i).timeH.length()<2)
+                    myTasks.get(i).timeH = "0" + myTasks.get(i).timeH;
+                if(myTasks.get(i).timeM.length()<2)
+                    myTasks.get(i).timeM = "0" + myTasks.get(i).timeM;
+
+                viewHolder.alarmTime.setText(myTasks.get(i).timeH+":"+myTasks.get(i).timeM);
                 viewHolder.alarmTime.setVisibility(View.VISIBLE);
                 viewHolder.addAlarm.setVisibility(View.GONE);
             }else{

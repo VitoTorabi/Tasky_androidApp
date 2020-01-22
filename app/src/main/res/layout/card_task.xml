@@ -39,6 +39,7 @@
             />
     </FrameLayout>
     <TextView
+        android:clickable="false"
         android:text="salam khaste nabashi kakam :)"
         android:layout_width="match_parent"
         android:layout_weight="1"

@@ -1,12 +1,18 @@
 package com.program.android.vito.tasky;
 import android.content.Intent;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.AlarmClock;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -16,12 +22,18 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
     public SqliteDatabase db;
     ArrayList<Button> days;
     ImageButton menu;
@@ -33,6 +45,62 @@ public class MainActivity extends AppCompatActivity {
     FragmentTransaction transaction;
     public Button clicked;
     public int day;
+    String currentPhotoPath;
+    static final int REQUEST_TAKE_PHOTO = 1;
+
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                return;
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.tasky.android.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
+        }
+    }
+
+//    private void dispatchTakePictureIntent() {
+//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+//            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+//        }
+//    }
+
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(currentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
+    }
 
     public void refreshFrag(){
         frag.onStart();
@@ -45,82 +113,85 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog.Builder builder =new AlertDialog.Builder(MainActivity.this);
                 View mView = getLayoutInflater().inflate(R.layout.task_view_dialog, null);
 
-
-                final EditText dateM = mView.findViewById(R.id.addTaskM);
-                final EditText dateD = mView.findViewById(R.id.addTaskD);
                 final EditText title = mView.findViewById(R.id.addTaskTitle);
                 final EditText text = mView.findViewById(R.id.addTaskText);
                 final EditText h = mView.findViewById(R.id.addTaskTimeH);
                 final EditText m = mView.findViewById(R.id.addTaskTimeM);
-                final EditText alarmH = mView.findViewById(R.id.addTaskAlarmH);
-                final EditText alarmM = mView.findViewById(R.id.addTaskAlarmM);
 
-                dateM.setText(task.month);
-                dateD.setText(task.day);
+
                 title.setText(task.title);
                 h.setText(task.timeH);
                 m.setText(task.timeM);
                 text.setText(task.text);
-                alarmH.setText(task.alarmH);
-                alarmM.setText(task.alarmM);
 
 
                 Button save = mView.findViewById(R.id.addTaskSave);
+                final ImageButton addPic = mView.findViewById(R.id.add_pic);
+                final ImageButton showPic = mView.findViewById(R.id.show_pic);
 
                 InputFilter[] filters = new InputFilter[1];
                 filters[0] = new InputFilter.LengthFilter(2);
-                dateD.setFilters(filters);
-                dateM.setFilters(filters);
+
                 h.setFilters(filters);
                 m.setFilters(filters);
-                alarmH.setFilters(filters);
-                alarmM.setFilters(filters);
+
 
 
                 builder.setView(mView);
                 final AlertDialog dialog = builder.create();
                 dialog.show();
 
+                if(task.imagePath == null){
+                    addPic.setVisibility(View.VISIBLE);
+                    showPic.setVisibility(View.GONE);
+                }else {
+                    addPic.setVisibility(View.GONE);
+                    showPic.setVisibility(View.VISIBLE);
+                }
+
+                addPic.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        addPic.setVisibility(View.GONE);
+                        showPic.setVisibility(View.VISIBLE);
+                        dispatchTakePictureIntent();
+                        galleryAddPic();
+                        task.imagePath = currentPhotoPath;
+                        db.updateTask(task,task.id);
+                    }
+                });
+
+                showPic.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.setDataAndType(Uri.parse(task.imagePath), "image/*");
+                        try {
+                            startActivity(intent);
+                        }catch (Exception e){
+
+                        }
+                    }
+                });
+
                 save.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         MyTask[] taskArr = new MyTask[]{new MyTask(
-                                String.valueOf(dateM.getText()),
-                                String.valueOf(dateD.getText()),
+                                String.valueOf(calendar.get(Calendar.MONTH)),
+                                String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)),
                                 String.valueOf(title.getText()),
                                 String.valueOf(text.getText()),
                                 String.valueOf(h.getText()),
                                 String.valueOf(m.getText()))};
-                        taskArr[0].setAlarmTime(
-                                String.valueOf(alarmH.getText()),
-                                String.valueOf(alarmM.getText()));
 
-
-                        if(!taskArr[0].alarmH.equals("") && !taskArr[0].alarmM.equals("") ) {
-                            if (Integer.parseInt(taskArr[0].alarmH) > 23 ||
-                                    Integer.parseInt(taskArr[0].alarmH) < 0)
-                                taskArr[0].alarmH = task.alarmH;
-                            if (Integer.parseInt(taskArr[0].alarmM) > 59 ||
-                                    Integer.parseInt(taskArr[0].alarmM) < 0)
-                                taskArr[0].alarmM = task.alarmM;
-                        }else {
-                            taskArr[0].alarmH = task.alarmH;
-                            taskArr[0].alarmM = task.alarmM;
-                        }
                         if(taskArr[0].timeH.equals("") || Integer.parseInt(taskArr[0].timeH)>23 ||
                                 Integer.parseInt(taskArr[0].timeH)<0)
-                            taskArr[0].timeH = task.timeH;
+                            taskArr[0].timeH = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
                         if(taskArr[0].timeM.equals("") || Integer.parseInt(taskArr[0].timeM)>59 ||
                                 Integer.parseInt(taskArr[0].timeM)<0)
-                            taskArr[0].timeM = task.timeM;
-
-                        if(taskArr[0].day.equals("")|| Integer.parseInt(taskArr[0].day)>30 ||
-                                Integer.parseInt(taskArr[0].day)<1)
-                            taskArr[0].day = task.day;
-                        if( taskArr[0].month.equals("") || Integer.parseInt( taskArr[0].month)>12 ||
-                                Integer.parseInt( taskArr[0].month)<1)
-                            taskArr[0].month = task.month;
+                            taskArr[0].timeM = String.valueOf(calendar.get(Calendar.MINUTE));
 
                         if(taskArr[0].title.equals(""))
                             taskArr[0].title = task.title;
@@ -144,71 +215,75 @@ public class MainActivity extends AppCompatActivity {
                 View mView = getLayoutInflater().inflate(R.layout.task_view_dialog, null);
 
 
-                final EditText dateM = mView.findViewById(R.id.addTaskM);
-                final EditText dateD = mView.findViewById(R.id.addTaskD);
+
                 final EditText title = mView.findViewById(R.id.addTaskTitle);
                 final EditText text = mView.findViewById(R.id.addTaskText);
                 final EditText h = mView.findViewById(R.id.addTaskTimeH);
                 final EditText m = mView.findViewById(R.id.addTaskTimeM);
-                final EditText alarmH = mView.findViewById(R.id.addTaskAlarmH);
-                final EditText alarmM = mView.findViewById(R.id.addTaskAlarmM);
 
-                dateD.setHint(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
-                dateM.setHint(String.valueOf(calendar.get(Calendar.MONTH)));
+
                 h.setHint(String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)));
                 m.setHint(String.valueOf(calendar.get(Calendar.MINUTE)));
 
                 Button save = mView.findViewById(R.id.addTaskSave);
+                final ImageButton addPic = mView.findViewById(R.id.add_pic);
+                final ImageButton showPic = mView.findViewById(R.id.show_pic);
 
                 InputFilter[] filters = new InputFilter[1];
                 filters[0] = new InputFilter.LengthFilter(2);
-                dateD.setFilters(filters);
-                dateM.setFilters(filters);
+
                 h.setFilters(filters);
                 m.setFilters(filters);
-                alarmH.setFilters(filters);
-                alarmM.setFilters(filters);
+
 
 
                 builder.setView(mView);
                 final AlertDialog dialog = builder.create();
                 dialog.show();
 
+                addPic.setVisibility(View.VISIBLE);
+                showPic.setVisibility(View.GONE);
+
+                addPic.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        addPic.setVisibility(View.GONE);
+                        showPic.setVisibility(View.VISIBLE);
+                        dispatchTakePictureIntent();
+                        galleryAddPic();
+                    }
+                });
+
+                showPic.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.setDataAndType(Uri.parse(currentPhotoPath), "image/*");
+                        try {
+                            startActivity(intent);
+                        }catch (Exception e){
+
+                        }
+                        Log.d("image URI\t", currentPhotoPath);
+                    }
+                });
+
+
                 save.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         MyTask[] task = new MyTask[]{new MyTask(
-                                String.valueOf(dateM.getText()),
-                                String.valueOf(dateD.getText()),
+                                String.valueOf(calendar.get(Calendar.MONTH)),
+                                String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)+
+                                        Integer.parseInt(clicked.getTag().toString())-day),
                                 String.valueOf(title.getText()),
                                 String.valueOf(text.getText()),
                                 String.valueOf(h.getText()),
                                 String.valueOf(m.getText()))};
-                        task[0].setAlarmTime(
-                                String.valueOf(alarmH.getText()),
-                                String.valueOf(alarmM.getText()));
 
-                        if(!task[0].alarmH.equals("") && !task[0].alarmM.equals("") ) {
-                            if (Integer.parseInt(task[0].alarmH) > 23 ||
-                                    Integer.parseInt(task[0].alarmH) < 0)
-                                task[0].alarmH = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
-                            if (Integer.parseInt(task[0].alarmH) > 59 ||
-                                    Integer.parseInt(task[0].alarmH) < 0)
-                                task[0].alarmM = String.valueOf(calendar.get(Calendar.MINUTE));
+                        task[0].setImagePath(currentPhotoPath);
 
-
-                            // set alarm
-                            Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
-                            i.putExtra(AlarmClock.EXTRA_HOUR, task[0].alarmH);
-                            i.putExtra(AlarmClock.EXTRA_MINUTES, task[0].alarmM);
-                            i.putExtra(AlarmClock.EXTRA_SKIP_UI,true);
-
-
-                            startActivity(i);
-                        }else {
-                            task[0].alarmH ="";
-                            task[0].alarmM ="";
-                        }
                         if(task[0].timeH.equals("") || Integer.parseInt(task[0].timeH)>23 ||
                                 Integer.parseInt(task[0].timeH)<0)
                             task[0].timeH = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
@@ -216,16 +291,10 @@ public class MainActivity extends AppCompatActivity {
                                 Integer.parseInt(task[0].timeM)<0)
                             task[0].timeM = String.valueOf(calendar.get(Calendar.MINUTE));
 
-                        if(task[0].month.equals("") || Integer.parseInt(task[0].month)>12 ||
-                                Integer.parseInt(task[0].month)<1)
-                            task[0].month = String.valueOf(calendar.get(Calendar.MONTH));
-                        if(task[0].day.equals("")|| Integer.parseInt(task[0].day)>30 ||
-                                Integer.parseInt(task[0].day)<1)
-                            task[0].day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
-
                         if(task[0].title.equals(""))
                             task[0].title = "title";
 
+                        task[0].alarm = 0;
 
                         db.addTask(task[0]);
                         dialog.dismiss();
@@ -286,7 +355,8 @@ public class MainActivity extends AppCompatActivity {
         days.add((Button) findViewById(R.id.day6));
 
         day = calendar.get(Calendar.DAY_OF_WEEK);
-        day = 1;
+        if (day == 7)
+            day = 0;
 
 
         final TodayFrag todayFrag = new TodayFrag();
