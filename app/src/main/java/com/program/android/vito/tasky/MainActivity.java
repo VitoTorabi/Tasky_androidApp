@@ -1,4 +1,6 @@
 package com.program.android.vito.tasky;
+
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +21,12 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,11 +38,10 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
     public SqliteDatabase db;
     ArrayList<Button> days;
     ImageButton menu;
-    LinearLayout menuLayout;
+    FrameLayout menuLayout;
     Animation openMenu;
     Animation closeMenu;
     Calendar calendar = Calendar.getInstance();
@@ -44,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
     public int day;
     String currentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 1;
+    String token;
+    public String loggedInEmail;
+    public String firstName;
+    public String lastName;
 
 
     private File createImageFile() throws IOException {
@@ -355,6 +366,51 @@ public class MainActivity extends AppCompatActivity {
         if (day == 7)
             day = 0;
 
+        final EditText username = findViewById(R.id.username);
+        final EditText password = findViewById(R.id.password);
+        final TextView fullname = findViewById(R.id.fullname);
+        final TextView email = findViewById(R.id.email);
+        final LinearLayout loginLayout = findViewById(R.id.menu_login);
+        final LinearLayout profileLayout = findViewById(R.id.menu_profile);
+        final Button login = findViewById(R.id.login);
+        final Button logOut = findViewById(R.id.logout);
+        final Context mContext = this;
+        login.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               Thread t =new Thread(new Runnable() {
+                   @Override
+                   public void run() {
+                       login(mContext,String.valueOf(username.getText()),
+                               String.valueOf(password.getText()));
+                   }
+               });
+               t.start();
+               try {
+                   t.join();
+               } catch (InterruptedException e) {
+                   e.printStackTrace();
+               }
+
+               if(email!=null && firstName != null && firstName!= null ) {
+                   email.setText("Email:    " + loggedInEmail);
+                   fullname.setText("Name:  " + firstName + " " + lastName);
+                   loginLayout.setVisibility(View.GONE);
+                   profileLayout.setVisibility(View.VISIBLE);
+               }
+           }
+        });
+        logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginLayout.setVisibility(View.VISIBLE);
+                profileLayout.setVisibility(View.GONE);
+                firstName = null;
+                lastName = null;
+                loggedInEmail = null;
+            }
+        });
+
 
         final TodayFrag todayFrag = new TodayFrag();
         frag = todayFrag;
@@ -387,6 +443,55 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        menuFrame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                menuLayout.startAnimation(closeMenu);
+                menuLayout.setVisibility(View.GONE);
+                menuFrame.setVisibility(View.GONE);
+            }
+        });
 
     }
+    public void login(final Context mContext, String username, String password){
+        JsonObject json = new JsonObject();
+        json.addProperty("username", username);
+        json.addProperty("password", password);
+        Ion.with(mContext)
+                .load("http://192.241.136.152:3000/api/token/")
+                .setJsonObjectBody(json)
+                .asJsonObject()
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+                        if (result!=null && result.has("access")){
+                            token = String.valueOf(result.get("access"));
+                            getUser(mContext, token);
+                        } else {
+                            Toast.makeText(mContext, "User not found", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
+
+    public void getUser(Context mContext, String token){
+        Ion.with(mContext)
+                .load("http://192.241.136.152:3000/api/user/")
+                .setHeader("Authorization", "Bearer "+token.replaceAll("^\"|\"$",""))
+                .asJsonObject()
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+                        loggedInEmail = String.valueOf((result.get("email")));
+                        firstName = String.valueOf(result.get("first_name"));
+                        lastName = String.valueOf(result.get("last_name"));
+                        Log.d("firstName:  ",firstName);
+                        Log.d("lastName:  ",lastName);
+                        Log.d("loggedInEmail:  ",loggedInEmail);
+
+
+                    }
+                });
+    }
 }
+
