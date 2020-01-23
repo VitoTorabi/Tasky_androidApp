@@ -1,5 +1,7 @@
 package com.program.android.vito.tasky;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.provider.AlarmClock;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -47,8 +50,26 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyTaskViewHold
                 @Override
                 public void onSwipeLeft() {
                     Log.d(""+myTasks.get(i).id,"left");
-                    mainActivity.db.deleteTask(myTasks.get(i).id);
-                    mainActivity.refreshFrag();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mainActivity);
+                    builder.setTitle("Delete Confirm");
+                    builder.setMessage("You are about to delete this task. Are you sure?");
+                    builder.setCancelable(false);
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(mainActivity, "task deleted", Toast.LENGTH_SHORT).show();
+                            mainActivity.db.deleteTask(myTasks.get(i).id);
+                            mainActivity.refreshFrag();
+                        }
+                    });
+
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+
+                    builder.show();
                 }
                 @Override
                 public void onSwipeRight() {

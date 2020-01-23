@@ -1,5 +1,7 @@
 package com.program.android.vito.tasky;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -9,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -38,8 +40,27 @@ public class DoneTaskAdapter extends RecyclerView.Adapter<DoneTaskAdapter.DoneTa
             @Override
             public void onSwipeLeft() {
                 Log.d(""+dones.get(i).id,"left");
-                mainActivity.db.deleteTask(dones.get(i).id);
-                mainActivity.refreshFrag();
+                AlertDialog.Builder builder = new AlertDialog.Builder(mainActivity);
+                builder.setTitle("Delete Confirm");
+                builder.setMessage("You are about to delete this task. Are you sure?");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(mainActivity, "task deleted", Toast.LENGTH_SHORT).show();
+                        mainActivity.db.deleteTask(dones.get(i).id);
+                        mainActivity.refreshFrag();
+                    }
+                });
+
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+
+                builder.show();
+
             }
             @Override
             public void onSwipeRight() {
