@@ -95,12 +95,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    private void dispatchTakePictureIntent() {
-//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-//            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-//        }
-//    }
 
     private void galleryAddPic() {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
@@ -126,6 +120,11 @@ public class MainActivity extends AppCompatActivity {
                 final EditText h = mView.findViewById(R.id.addTaskTimeH);
                 final EditText m = mView.findViewById(R.id.addTaskTimeM);
 
+
+                if(task.timeH.length()<2)
+                    task.timeH = "0" + task.timeH;
+                if(task.timeM.length()<2)
+                    task.timeM = "0" + task.timeM;
 
                 title.setText(task.title);
                 h.setText(task.timeH);
